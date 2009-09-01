@@ -51,7 +51,7 @@ enable :sessions
 configure do
   Dir.foreach(File.join(Dir.pwd, 'lib')) do |file|
     if file =~ /\.rb$/ and not file =~ /^\./ 
-      require file
+      require "lib/#{file}"
     end
   end
 end
