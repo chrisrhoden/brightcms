@@ -44,25 +44,16 @@ ActiveRecord::Base.establish_connection(
 
 enable :sessions
 
-class Post < ActiveRecord::Base
-  validates_presence_of :title, :body
-  belongs_to :user
-  has_many :comments
-end
-
-class Comment < ActiveRecord::Base
-  belongs_to :post
-end
-
-class ProjectType < ActiveRecord::Base
-  has_many :projects
-end
-
-class Project < ActiveRecord::Base
-end
-
-class User < ActiveRecord::Base
-  has_many :posts
+# This little hack automatically includes everything dropped
+# into the lib directory that ends with .rb and does not start
+# with a . - Maybe not the best way to go, but this file is
+# starting to make me a little crazy...
+configure do
+  Dir.foreach(File.join(Dir.pwd, 'lib')) do |file|
+    if file =~ /\.rb$/ and not file =~ /^\./ 
+      require file
+    end
+  end
 end
 
 error(404) do
